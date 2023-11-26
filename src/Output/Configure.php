@@ -2,16 +2,12 @@
 
 namespace uzdevid\docman\Output;
 
-use yii\base\BaseObject;
-
 /**
  * Class Configure
  *
  * @package uzdevid\docman\Output
- *
- * @property array|string[] $params
  */
-abstract class Configure extends BaseObject {
+abstract class Configure {
     /**
      * @var array
      */
@@ -22,8 +18,6 @@ abstract class Configure extends BaseObject {
      */
     public function __construct(array $params = []) {
         $this->setParams($params);
-        
-        parent::__construct();
     }
 
     /**

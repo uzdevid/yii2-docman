@@ -9,6 +9,19 @@ use uzdevid\docman\Output\Output;
 use uzdevid\docman\Save\SaveInterface;
 use Yii;
 
+/**
+ * Class Pdf
+ *
+ * @property string $orientation
+ * @property string $format
+ * @property string $mode
+ * @property int $margin_top
+ * @property int $margin_left
+ * @property int $margin_right
+ * @property int $margin_bottom
+ * @property int $margin_header
+ * @property int $margin_footer
+ */
 class Pdf extends Output {
     /**
      * @var Mpdf
@@ -20,7 +33,7 @@ class Pdf extends Output {
      */
     public function __construct(Configure|array $config = []) {
         $config = $config instanceof Configure ? $config : new Config($config);
-        $this->mpdf = new Mpdf($config->params);
+        $this->mpdf = new Mpdf($config->getParams());
 
         parent::__construct();
     }

@@ -3,14 +3,14 @@
 namespace uzdevid\docman\Output;
 
 use uzdevid\docman\Save\SaveInterface;
-use yii\base\Component;
+use yii\base\BaseObject;
 
-abstract class Output extends Component {
+abstract class Output extends BaseObject {
     /**
      * @var string
      */
     protected string $extension;
-    
+
     /**
      * @var string
      */
