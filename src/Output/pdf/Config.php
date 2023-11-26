@@ -38,10 +38,7 @@ class Config extends Configure {
      * @param array $params
      */
     public function __construct(array $params = []) {
-        if (empty($params)) {
-            $params = $this->defaultParams;
-        }
-
+        $params = array_merge($this->defaultParams, $params);
         parent::__construct($params);
     }
 
