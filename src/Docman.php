@@ -56,20 +56,22 @@ class Docman extends Component {
             return $this;
         }
 
-        $this->_renderer = match (true) {
-            is_array($renderer) => Yii::createObject($renderer),
-            is_string($renderer) => class_exists($renderer) ? Yii::createObject(['class' => $renderer]) : Yii::$app->get($renderer)
-        };
+        if (is_array($renderer)) {
+            $rendererObject = Yii::createObject($renderer);
+        } else {
+            $rendererObject = class_exists($renderer) ? Yii::createObject(['class' => $renderer]) : Yii::$app->get($renderer);
+        }
 
-        if (!is_subclass_of($this->_renderer, View::class)) {
+        if (!is_subclass_of($rendererObject, View::class)) {
             throw new InvalidConfigException('Renderer must be instance of ' . View::class);
         }
 
+        $this->_renderer = $rendererObject;
         return $this;
     }
 
     /**
-     * @param Output|array $output
+     * @param Output|array|string $output
      *
      * @return $this
      * @throws InvalidConfigException
@@ -80,17 +82,17 @@ class Docman extends Component {
             return $this;
         }
 
-        $output = match (true) {
-            is_array($renderer) => Yii::createObject($renderer),
-            is_string($renderer) => class_exists($renderer) ? Yii::createObject(['class' => $renderer]) : Yii::$app->get($renderer)
-        };
+        if (is_array($output)) {
+            $outputObject = Yii::createObject($output);
+        } else {
+            $outputObject = class_exists($output) ? Yii::createObject(['class' => $output]) : Yii::$app->get($output);
+        }
 
-        if (!is_subclass_of($output, Output::class)) {
+        if (!is_subclass_of($outputObject, Output::class)) {
             throw new InvalidConfigException('Output must be instance of ' . Output::class);
         }
 
-        $this->output = $output;
-
+        $this->output = $outputObject;
         return $this;
     }
 
