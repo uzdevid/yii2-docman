@@ -4,14 +4,14 @@ namespace uzdevid\docman\Save;
 
 class ReturnContent implements SaveInterface {
     /**
-     * @var string
+     * @var string|null
      */
-    public string $content;
+    public string|null $content;
 
     /**
      * @param mixed $content
      */
-    public function __construct(string &$content) {
+    public function __construct(string|null &$content) {
         $this->content = &$content;
     }
 

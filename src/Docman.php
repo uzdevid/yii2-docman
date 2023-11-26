@@ -18,8 +18,8 @@ class Docman extends Component {
     /**
      * @var Output|null
      */
-    public Output|null $output = null;
-    
+    private Output|null $output = null;
+
     /**
      * @var View
      */
@@ -33,11 +33,15 @@ class Docman extends Component {
     /**
      * @throws InvalidConfigException
      */
-    public function setRenderer(View|array|string|null $renderer): static {
+    public function setRenderer(View|array|string|null $renderer = null): static {
+        if (is_null($renderer)) {
+            $this->_renderer = Yii::$app->view;
+            return $this;
+        }
+
         $this->_renderer = match (true) {
             is_array($renderer) => Yii::createObject($renderer),
             is_string($renderer) => class_exists($renderer) ? Yii::createObject(['class' => $renderer]) : Yii::$app->get($renderer),
-            is_null($renderer) => Yii::$app->view,
             default => throw new InvalidConfigException('Renderer must be array, string or null')
         };
 
@@ -45,6 +49,16 @@ class Docman extends Component {
             throw new InvalidConfigException('Renderer must be instance of ' . View::class);
         }
 
+        return $this;
+    }
+
+    /**
+     * @param Output $output
+     *
+     * @return $this
+     */
+    public function output(Output $output): static {
+        $this->output = $output;
         return $this;
     }
 
@@ -91,8 +105,13 @@ class Docman extends Component {
 
     /**
      * @return Output
+     * @throws InvalidConfigException
      */
     public function render(): Output {
+        if (!isset($this->_renderer)) {
+            $this->setRenderer();
+        }
+
         $content = $this->_document->setRenderer($this->_renderer)->build();
         return $this->output->content($content);
     }
