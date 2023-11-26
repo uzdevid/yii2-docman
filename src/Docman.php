@@ -11,15 +11,11 @@ use yii\base\View;
 
 /**
  *
- * @property-write array $variables
  * @property View|null|string|array $renderer
+ * @property-write array $variables
+ * @property Output|null $output
  */
 class Docman extends Component {
-    /**
-     * @var Output|null
-     */
-    private Output|null $output = null;
-
     /**
      * @var View
      */
@@ -29,6 +25,22 @@ class Docman extends Component {
      * @var Document
      */
     private Document $_document;
+
+    /**
+     * @var Output|null
+     */
+    private Output|null $output = null;
+
+    /**
+     * @throws InvalidConfigException
+     */
+    public function init(): void {
+        parent::init();
+
+        if (!isset($this->_renderer)) {
+            $this->setRenderer();
+        }
+    }
 
     /**
      * @throws InvalidConfigException
@@ -53,12 +65,22 @@ class Docman extends Component {
     }
 
     /**
-     * @param Output $output
+     * @param Output|array $output
      *
      * @return $this
+     * @throws InvalidConfigException
      */
-    public function output(Output $output): static {
+    public function setOutput(Output|array $output): static {
+        if (is_array($output)) {
+            $output = Yii::createObject($output);
+
+            if (!is_subclass_of($output, Output::class)) {
+                throw new InvalidConfigException('Output must be instance of ' . Output::class);
+            }
+        }
+
         $this->output = $output;
+
         return $this;
     }
 
@@ -104,12 +126,14 @@ class Docman extends Component {
     }
 
     /**
+     * @param Output|null $output
+     *
      * @return Output
      * @throws InvalidConfigException
      */
-    public function render(): Output {
-        if (!isset($this->_renderer)) {
-            $this->setRenderer();
+    public function render(Output|null $output): Output {
+        if (!is_null($output)) {
+            $this->setOutput($output);
         }
 
         $content = $this->_document->setRenderer($this->_renderer)->build();
