@@ -46,6 +46,11 @@ class Docman extends Component {
      * @throws InvalidConfigException
      */
     public function setRenderer(View|array|string|null $renderer = null): static {
+        if ($renderer instanceof View) {
+            $this->_renderer = $renderer;
+            return $this;
+        }
+
         if (is_null($renderer)) {
             $this->_renderer = Yii::$app->view;
             return $this;
@@ -53,8 +58,7 @@ class Docman extends Component {
 
         $this->_renderer = match (true) {
             is_array($renderer) => Yii::createObject($renderer),
-            is_string($renderer) => class_exists($renderer) ? Yii::createObject(['class' => $renderer]) : Yii::$app->get($renderer),
-            default => throw new InvalidConfigException('Renderer must be array, string or null')
+            is_string($renderer) => class_exists($renderer) ? Yii::createObject(['class' => $renderer]) : Yii::$app->get($renderer)
         };
 
         if (!is_subclass_of($this->_renderer, View::class)) {
@@ -70,13 +74,19 @@ class Docman extends Component {
      * @return $this
      * @throws InvalidConfigException
      */
-    public function setOutput(Output|array $output): static {
-        if (is_array($output)) {
-            $output = Yii::createObject($output);
+    public function setOutput(Output|array|string $output): static {
+        if ($output instanceof Output) {
+            $this->output = $output;
+            return $this;
+        }
 
-            if (!is_subclass_of($output, Output::class)) {
-                throw new InvalidConfigException('Output must be instance of ' . Output::class);
-            }
+        $output = match (true) {
+            is_array($renderer) => Yii::createObject($renderer),
+            is_string($renderer) => class_exists($renderer) ? Yii::createObject(['class' => $renderer]) : Yii::$app->get($renderer)
+        };
+
+        if (!is_subclass_of($output, Output::class)) {
+            throw new InvalidConfigException('Output must be instance of ' . Output::class);
         }
 
         $this->output = $output;
