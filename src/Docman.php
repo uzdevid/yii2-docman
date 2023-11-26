@@ -131,7 +131,7 @@ class Docman extends Component {
      * @return Output
      * @throws InvalidConfigException
      */
-    public function render(Output|null $output): Output {
+    public function render(Output|null $output = null): Output {
         if (!is_null($output)) {
             $this->setOutput($output);
         }
