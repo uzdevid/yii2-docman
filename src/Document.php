@@ -25,30 +25,11 @@ abstract class Document {
      */
     abstract public function layoutPath(): string;
 
-    /**
-     * @return string
-     */
-    abstract public function layoutName(): string;
-
-    /**
-     * @return string
-     */
-    abstract public function layoutExtension(): string;
 
     /**
      * @return string
      */
     abstract public function templatePath(): string;
-
-    /**
-     * @return string
-     */
-    abstract public function templateName(): string;
-
-    /**
-     * @return string
-     */
-    abstract public function templateExtension(): string;
 
     /**
      * @return string
@@ -90,14 +71,12 @@ abstract class Document {
      * @return string
      */
     public function render(): string {
-        $path = "%s/%s.%s";
-
-        $content = $this->renderer->render(sprintf($path, $this->templatePath(), $this->templateName(), $this->templateExtension()), $this->variables);
+        $content = $this->renderer->render($this->templatePath(), $this->variables);
 
         if (!$this->useLayout) {
             return $content;
         }
 
-        return $this->renderer->render(sprintf($path, $this->layoutPath(), $this->layoutName(), $this->layoutExtension()), array_merge($this->variables, ['content' => $content]));
+        return $this->renderer->render($this->layoutPath(), array_merge($this->variables, ['content' => $content]));
     }
 }
