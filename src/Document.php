@@ -4,6 +4,12 @@ namespace uzdevid\docman;
 
 use yii\base\View;
 
+/**
+ * Class Document
+ *
+ * @property array $variables
+ * @property-write View $renderer
+ */
 abstract class Document {
     /**
      * @var array
