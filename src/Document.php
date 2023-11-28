@@ -57,6 +57,13 @@ abstract class Document {
     }
 
     /**
+     * @return array
+     */
+    public function getVariables(): array {
+        return $this->variables;
+    }
+
+    /**
      * @param string $name
      * @param mixed $value
      *
@@ -65,6 +72,15 @@ abstract class Document {
     public function setVariable(string $name, mixed $value): static {
         $this->variables[$name] = $value;
         return $this;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function getVariable(string $name): mixed {
+        return $this->variables[$name] ?? null;
     }
 
     /**
