@@ -214,7 +214,7 @@ class Config extends Configure {
             $fontDir = [$fontDir];
         }
 
-        return $this->setParam('fontDir', array_merge($fontDir, array_merge($defaultConfig['fontDir'], $fontDir)));
+        return $this->setParam('fontDir', array_merge($defaultConfig['fontDir'], $fontDir));
     }
 
     /**
