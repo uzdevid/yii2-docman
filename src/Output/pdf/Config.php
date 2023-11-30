@@ -20,6 +20,7 @@ use yii\base\InvalidArgumentException;
  * @property int $marginFooter
  * @property array|string[] $fontDir
  * @property array $fontData
+ * @property string $defaultFont
  */
 class Config extends Configure {
     protected array $allowedOrientations = ['P', 'L'];
@@ -247,7 +248,7 @@ class Config extends Configure {
     public function setDefaultFont(string $font): static {
         return $this->setParam('default_font', $font);
     }
-    
+
     /**
      * @return string
      */
