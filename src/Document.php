@@ -25,7 +25,6 @@ abstract class Document {
      */
     abstract public function layoutPath(): string;
 
-
     /**
      * @return string
      */
