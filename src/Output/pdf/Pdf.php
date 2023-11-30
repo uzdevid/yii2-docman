@@ -15,12 +15,15 @@ use Yii;
  * @property string $orientation
  * @property string $format
  * @property string $mode
- * @property int $margin_top
- * @property int $margin_left
- * @property int $margin_right
- * @property int $margin_bottom
- * @property int $margin_header
- * @property int $margin_footer
+ * @property int $marginTop
+ * @property int $marginLeft
+ * @property int $marginRight
+ * @property int $marginBottom
+ * @property int $marginHeader
+ * @property int $marginFooter
+ * @property array|string[] $fontDir
+ * @property array $fontData
+ * @property string $defaultFont
  */
 class Pdf extends Output {
     /**
