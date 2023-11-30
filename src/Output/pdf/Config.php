@@ -33,9 +33,9 @@ class Config extends Configure {
         'format' => 'A4',
         'mode' => 'utf-8',
         //
-        'margin_top' => 8,
-        'margin_left' => 8,
-        'margin_right' => 8,
+        'marginTop' => 8,
+        'marginLeft' => 8,
+        'marginRight' => 8,
     ];
 
     /**
@@ -208,12 +208,11 @@ class Config extends Configure {
      * @return $this
      */
     public function setFontDir(array|string $fontDir): static {
-        $defaultConfig = (new ConfigVariables())->getDefaults();
-
         if (is_string($fontDir)) {
             $fontDir = [$fontDir];
         }
 
+        $defaultConfig = (new ConfigVariables())->getDefaults();
         return $this->setParam('fontDir', array_merge($defaultConfig['fontDir'], $fontDir));
     }
 
