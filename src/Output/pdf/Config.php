@@ -2,6 +2,7 @@
 
 namespace uzdevid\docman\Output\pdf;
 
+use Mpdf\Config\ConfigVariables;
 use uzdevid\docman\Output\Configure;
 use yii\base\InvalidArgumentException;
 
@@ -17,6 +18,8 @@ use yii\base\InvalidArgumentException;
  * @property int $marginBottom
  * @property int $marginHeader
  * @property int $marginFooter
+ * @property array|string[] $fontDir
+ * @property array $fontData
  */
 class Config extends Configure {
     protected array $allowedOrientations = ['P', 'L'];
@@ -196,5 +199,59 @@ class Config extends Configure {
      */
     public function getMarginFooter(): int {
         return $this->getParam('margin_footer');
+    }
+
+    /**
+     * @param array|string $fontDir
+     *
+     * @return $this
+     */
+    public function setFontDir(array|string $fontDir): static {
+        $defaultConfig = (new ConfigVariables())->getDefaults();
+
+        if (is_string($fontDir)) {
+            $fontDir = [$fontDir];
+        }
+
+        return $this->setParam('fontDir', array_merge($fontDir, array_merge($defaultConfig['fontDir'], $fontDir)));
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getFontDir(): array {
+        return $this->getParam('fontDir');
+    }
+
+    /**
+     * @param array $fontData
+     *
+     * @return $this
+     */
+    public function setFontData(array $fontData): static {
+        return $this->setParam('fontData', array_merge($fontData, $fontData));
+    }
+
+    /**
+     * @return array
+     */
+    public function getFontData(): array {
+        return $this->getParam('fontData');
+    }
+
+    /**
+     * @param string $font
+     *
+     * @return $this
+     */
+    public function setDefaultFont(string $font): static {
+        return $this->setParam('default_font', $font);
+    }
+    
+    /**
+     * @return string
+     */
+    public function getDefaultFont(): string {
+        return $this->getParam('default_font');
     }
 }
