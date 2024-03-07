@@ -34,8 +34,15 @@ class DocX extends Output {
         Html::addHtml($section, $this->content);
 
         $objWriter = IOFactory::createWriter($this->phpWord);
-        $objWriter->save('helloWorld.docx');
 
-        return true;
+        $path = tempnam(sys_get_temp_dir(), 'document-file');
+
+        $objWriter->save($path);
+
+        $content = file_get_contents($path);
+
+        @unlink($path);
+
+        return $save->save($content);
     }
 }
